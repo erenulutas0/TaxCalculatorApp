@@ -217,7 +217,7 @@ public class ProductServiceImpl implements ProductService {
             case CAR:
                 taxRate = new BigDecimal("0.02"); // %2
                 break;
-            case COMMERCIAL_VEHICLE:
+            case COMMERCIAL:
                 taxRate = new BigDecimal("0.03"); // %3
                 break;
             case HOUSE:

@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
       
-      return { success: true };
+      return { success: true, user: userData };
     } catch (error) {
       console.error('Login error:', error);
       return { 
@@ -73,12 +73,17 @@ export const AuthProvider = ({ children }) => {
     return !!user && !!localStorage.getItem('token');
   };
 
+  const isAdmin = () => {
+    return user?.roles?.some(role => role === 'ROLE_ADMIN');
+  };
+
   const value = {
     user,
     login,
     register,
     logout,
     isAuthenticated,
+    isAdmin,
     loading,
   };
 

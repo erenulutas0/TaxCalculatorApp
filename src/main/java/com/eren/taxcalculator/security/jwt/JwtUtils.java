@@ -2,7 +2,6 @@ package com.eren.taxcalculator.security.jwt;
 
 import com.eren.taxcalculator.security.UserPrincipal;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,8 @@ public class JwtUtils {
     private int jwtExpirationMs;
 
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
+        // Base64 decode yerine direkt string kullan
+        byte[] keyBytes = jwtSecret.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

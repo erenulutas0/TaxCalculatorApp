@@ -21,7 +21,15 @@ const Login = () => {
       
       if (result.success) {
         toast.success('Başarıyla giriş yapıldı!');
-        navigate('/dashboard');
+        
+        // Admin kontrolü yaparak yönlendirme
+        const isAdmin = result.user?.roles?.some(role => role === 'ROLE_ADMIN');
+        
+        if (isAdmin) {
+          navigate('/admin');
+        } else {
+          navigate('/dashboard');
+        }
       } else {
         toast.error(result.error);
       }
@@ -164,6 +172,20 @@ const Login = () => {
             Kayıt Ol
           </Link>
         </p>
+
+        {/* Test kullanıcıları */}
+        <div style={{ 
+          marginTop: '20px', 
+          padding: '16px', 
+          background: '#f8fafc', 
+          borderRadius: '8px',
+          fontSize: '12px',
+          color: '#6b7280'
+        }}>
+          <strong>Test Kullanıcıları:</strong><br />
+          👑 Admin: <strong>admin95 / admin123</strong><br />
+          👤 User: Normal kullanıcı kaydı yapın
+        </div>
       </div>
     </div>
   );
