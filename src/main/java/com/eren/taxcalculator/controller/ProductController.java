@@ -86,4 +86,15 @@ public class ProductController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PutMapping("/{id}/pay-tax")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> payTax(@PathVariable String id, Principal principal) {
+        try {
+            ProductResponse product = productService.payTax(id, principal.getName());
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: " + e.getMessage()));
+        }
+    }
 }

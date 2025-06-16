@@ -93,6 +93,9 @@ public class ProductServiceImpl implements ProductService {
         if (request.getDescription() != null) {
             product.setDescription(request.getDescription());
         }
+        if (request.getTaxPaid() != null) { // ✅ Yeni kontrol
+            product.setTaxPaid(request.getTaxPaid());
+        }
 
         Product updatedProduct = productRepository.save(product);
         return convertToProductResponse(updatedProduct);
@@ -164,17 +167,45 @@ public class ProductServiceImpl implements ProductService {
         );
     }
 
+    @Override
+    @Transactional
+    public ProductResponse payTax(String id, String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        // Kullanıcının ürününü kontrol et
+        if (!product.getUserId().equals(user.getId())) {
+            throw new UnauthorizedOperationException("You can only pay tax for your own products");
+        }
+
+        // Vergiyi ödendi olarak işaretle
+        product.setTaxPaid(true);
+        product.setTaxDueDate(null); // Vergi ödendiğinde due date'i temizle
+
+        Product updatedProduct = productRepository.save(product);
+        logger.info("Tax paid for product: {} by user: {}", id, username);
+
+        return convertToProductResponse(updatedProduct);
+    }
+
     private ProductResponse convertToProductResponse(Product product) {
         BigDecimal taxAmount = calculateTaxForProduct(product);
 
-        return new ProductResponse(
-                product.getId(),
-                product.getName(),
-                product.getType(),
-                product.getPrice(),
-                product.getDescription(),
-                taxAmount
-        );
+        ProductResponse response = new ProductResponse();
+        response.setId(product.getId());
+        response.setName(product.getName());
+        response.setType(product.getType());
+        response.setPrice(product.getPrice());
+        response.setDescription(product.getDescription());
+        response.setTaxAmount(taxAmount);
+        response.setTaxPaid(product.isTaxPaid()); // ✅ Bu satır eksikti
+        response.setOwnerId(product.getUserId());
+        response.setTaxDueDate(product.getTaxDueDate());
+
+        return response;
     }
 
     private BigDecimal calculateTaxForProduct(Product product) {

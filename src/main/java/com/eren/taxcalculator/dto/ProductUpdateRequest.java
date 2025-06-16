@@ -15,14 +15,17 @@ public class ProductUpdateRequest {
 
     private String description;
 
+    private Boolean taxPaid; // ✅ Yeni field
+
     // Constructors
     public ProductUpdateRequest() {}
 
-    public ProductUpdateRequest(String name, BigDecimal price, ProductType type, String description) {
+    public ProductUpdateRequest(String name, BigDecimal price, ProductType type, String description, Boolean taxPaid) {
         this.name = name;
         this.price = price;
         this.type = type;
         this.description = description;
+        this.taxPaid = taxPaid;
     }
 
     // Getters and Setters
@@ -37,4 +40,7 @@ public class ProductUpdateRequest {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public Boolean getTaxPaid() { return taxPaid; }
+    public void setTaxPaid(Boolean taxPaid) { this.taxPaid = taxPaid; }
 }

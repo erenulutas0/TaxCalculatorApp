@@ -10,4 +10,5 @@ public interface ProductService {
     void deleteProduct(String id, String username);
     TaxCalculationResponse calculateUserTotalTax(String username);
     ProductSummaryResponse getUserProductSummary(String username);
+    ProductResponse payTax(String id, String username); // ✅ Yeni metod
 }
