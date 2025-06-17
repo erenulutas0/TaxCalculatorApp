@@ -16,15 +16,17 @@ import java.util.Date;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${app.jwtSecret}")
+    @Value("${app.jwtSecret:mySecretKeyForTaxCalculatorApplicationThatIsAtLeast32CharactersLong}")
     private String jwtSecret;
 
-    @Value("${app.jwtExpirationMs}")
+    @Value("${app.jwtExpirationMs:86400000}")
     private int jwtExpirationMs;
 
     private Key getSigningKey() {
-        // Base64 decode yerine direkt string kullan
         byte[] keyBytes = jwtSecret.getBytes();
+        if (keyBytes.length < 32) {
+            keyBytes = "mySecretKeyForTaxCalculatorApplicationThatIsAtLeast32CharactersLong".getBytes();
+        }
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
