@@ -3,21 +3,23 @@ package com.eren.taxcalculator.dto;
 
 import com.eren.taxcalculator.model.ProductType;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ProductResponse {
-
     private String id;
     private String name;
-    private BigDecimal price;
     private ProductType type;
-    private String description;
-    private BigDecimal taxAmount;
-    private String ownerId;
+    private BigDecimal price;
+    private LocalDateTime purchaseDate;
     private boolean taxPaid;
-    private LocalDate taxDueDate;
+    private BigDecimal tax;
+    private String userId;
+    private String description;     // Bu field'ı ekleyin
+    private BigDecimal taxAmount;   // Bu field'ı ekleyin
+    private LocalDateTime taxDueDate; // Bu field'ı ekleyin
+    private String ownerId; // Bu field'ı ekleyin (userId ile aynı)
 
-    // Default constructor
+    // Constructors
     public ProductResponse() {}
 
     // ProductServiceImpl'de kullanılan constructor
@@ -31,30 +33,99 @@ public class ProductResponse {
     }
 
     // Getters and Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
+    public String getName() {
+        return name;
+    }
 
-    public ProductType getType() { return type; }
-    public void setType(ProductType type) { this.type = type; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public ProductType getType() {
+        return type;
+    }
 
-    public BigDecimal getTaxAmount() { return taxAmount; }
-    public void setTaxAmount(BigDecimal taxAmount) { this.taxAmount = taxAmount; }
+    public void setType(ProductType type) {
+        this.type = type;
+    }
 
-    public String getOwnerId() { return ownerId; }
-    public void setOwnerId(String ownerId) { this.ownerId = ownerId; }
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-    public boolean isTaxPaid() { return taxPaid; }
-    public void setTaxPaid(boolean taxPaid) { this.taxPaid = taxPaid; }
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
-    public LocalDate getTaxDueDate() { return taxDueDate; }
-    public void setTaxDueDate(LocalDate taxDueDate) { this.taxDueDate = taxDueDate; }
+    public LocalDateTime getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(LocalDateTime purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public boolean isTaxPaid() {
+        return taxPaid;
+    }
+
+    public void setTaxPaid(boolean taxPaid) {
+        this.taxPaid = taxPaid;
+    }
+
+    public BigDecimal getTax() {
+        return tax;
+    }
+
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getTaxAmount() {
+        return taxAmount;
+    }
+
+    public void setTaxAmount(BigDecimal taxAmount) {
+        this.taxAmount = taxAmount;
+    }
+
+    public LocalDateTime getTaxDueDate() {
+        return taxDueDate;
+    }
+
+    public void setTaxDueDate(LocalDateTime taxDueDate) {
+        this.taxDueDate = taxDueDate;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 }

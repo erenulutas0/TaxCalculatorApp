@@ -183,7 +183,9 @@ public class ProductServiceImpl implements ProductService {
 
         // Vergiyi ödendi olarak işaretle
         product.setTaxPaid(true);
-        product.setTaxDueDate(null); // Vergi ödendiğinde due date'i temizle
+        if (product.getTaxDueDate() != null) { // Null check ekleyin
+            product.setTaxDueDate(null);
+        }
 
         Product updatedProduct = productRepository.save(product);
         logger.info("Tax paid for product: {} by user: {}", id, username);
@@ -199,10 +201,13 @@ public class ProductServiceImpl implements ProductService {
         response.setName(product.getName());
         response.setType(product.getType());
         response.setPrice(product.getPrice());
+        response.setPurchaseDate(product.getPurchaseDate());
         response.setDescription(product.getDescription());
         response.setTaxAmount(taxAmount);
-        response.setTaxPaid(product.isTaxPaid()); // ✅ Bu satır eksikti
-        response.setOwnerId(product.getUserId());
+        response.setTax(taxAmount);
+        response.setTaxPaid(product.isTaxPaid());
+        response.setUserId(product.getUserId());
+        response.setOwnerId(product.getUserId()); // Aynı değer
         response.setTaxDueDate(product.getTaxDueDate());
 
         return response;

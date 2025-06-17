@@ -1,24 +1,23 @@
 package com.eren.taxcalculator.model;
 
-import com.eren.taxcalculator.model.ProductType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Document(collection = "products")
 public class Product {
-
     @Id
     private String id;
     private String name;
-    private BigDecimal price;
     private ProductType type;
-    private String description;
+    private BigDecimal price;
+    private LocalDateTime purchaseDate;
+    private boolean taxPaid;
     private String userId;
-    private boolean taxPaid = false;
-    private LocalDate taxDueDate;
+    private String description;
+    private LocalDateTime taxDueDate; // Bu field'ı ekleyin
 
     // Constructors
     public Product() {}
@@ -32,33 +31,81 @@ public class Product {
     }
 
     // Getters and Setters
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public BigDecimal getPrice() { return price; }
-    public void setPrice(BigDecimal price) { this.price = price; }
+    public String getName() {
+        return name;
+    }
 
-    public ProductType getType() { return type; }
-    public void setType(ProductType type) { this.type = type; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public ProductType getType() {
+        return type;
+    }
 
-    public String getUserId() { return userId; }
-    public void setUserId(String userId) { this.userId = userId; }
+    public void setType(ProductType type) {
+        this.type = type;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public LocalDateTime getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(LocalDateTime purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public boolean isTaxPaid() {
+        return taxPaid;
+    }
+
+    public void setTaxPaid(boolean taxPaid) {
+        this.taxPaid = taxPaid;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getTaxDueDate() {
+        return taxDueDate;
+    }
+
+    public void setTaxDueDate(LocalDateTime taxDueDate) {
+        this.taxDueDate = taxDueDate;
+    }
 
     // Backward compatibility için
     public String getOwnerId() { return userId; }
     public void setOwnerId(String ownerId) { this.userId = ownerId; }
-
-    public boolean isTaxPaid() { return taxPaid; }
-    public void setTaxPaid(boolean taxPaid) { this.taxPaid = taxPaid; }
-
-    public LocalDate getTaxDueDate() { return taxDueDate; }
-    public void setTaxDueDate(LocalDate taxDueDate) { this.taxDueDate = taxDueDate; }
 
     @Override
     public boolean equals(Object o) {

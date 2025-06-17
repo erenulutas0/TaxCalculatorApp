@@ -1,4 +1,4 @@
-        package com.eren.taxcalculator.dto;
+package com.eren.taxcalculator.dto;
 
 import java.math.BigDecimal;
 

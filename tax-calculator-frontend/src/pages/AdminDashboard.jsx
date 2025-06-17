@@ -7,6 +7,7 @@ const AdminDashboard = () => {
   const { user, logout } = useAuth();
   const [dashboardData, setDashboardData] = useState(null);
   const [users, setUsers] = useState([]);
+  const [originalUsers, setOriginalUsers] = useState([]); // Orijinal sıralama için
   const [selectedUser, setSelectedUser] = useState(null);
   const [userProducts, setUserProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,12 @@ const AdminDashboard = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  
+  // Sıralama state'leri
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: null
+  });
 
   useEffect(() => {
     fetchDashboardData();
@@ -35,12 +42,82 @@ const AdminDashboard = () => {
       setLoading(true);
       const response = await adminAPI.getAllUsers();
       setUsers(response.data);
+      setOriginalUsers(response.data); // Orijinal sıralamayı kaydet
     } catch (error) {
       console.error('Error fetching users:', error);
       toast.error('Kullanıcı verileri yüklenirken hata oluştu');
     } finally {
       setLoading(false);
     }
+  };
+
+  // Sıralama fonksiyonu
+  const handleSort = (key) => {
+    let direction = 'asc';
+    
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+
+    setSortConfig({ key, direction });
+
+    const sortedUsers = [...users].sort((a, b) => {
+      let aValue = a[key];
+      let bValue = b[key];
+
+      // Sayısal değerler için
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return direction === 'asc' ? aValue - bValue : bValue - aValue;
+      }
+
+      // String değerler için
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return direction === 'asc' 
+          ? aValue.localeCompare(bValue) 
+          : bValue.localeCompare(aValue);
+      }
+
+      return 0;
+    });
+
+    setUsers(sortedUsers);
+  };
+
+  // Reset fonksiyonu
+  const handleReset = () => {
+    setUsers([...originalUsers]);
+    setSortConfig({ key: null, direction: null });
+    toast.success('Tablo orijinal sıralamasına döndürüldü');
+  };
+
+  // Sıralama ikonları - Daha estetik versiyonu
+  const getSortIcon = (columnKey) => {
+    if (sortConfig.key !== columnKey) {
+      return (
+        <span style={{ 
+          color: '#9ca3af', 
+          marginLeft: '8px',
+          fontSize: '12px',
+          opacity: 0.6,
+          display: 'inline-flex',
+          flexDirection: 'column',
+          lineHeight: '0.5'
+        }}>
+          ▲<br/>▼
+        </span>
+      );
+    }
+    
+    return (
+      <span style={{ 
+        color: '#3b82f6', 
+        marginLeft: '8px',
+        fontSize: '14px',
+        fontWeight: 'bold'
+      }}>
+        {sortConfig.direction === 'asc' ? '▲' : '▼'}
+      </span>
+    );
   };
 
   const handleUserClick = async (userId, username) => {
@@ -68,7 +145,9 @@ const AdminDashboard = () => {
       await adminAPI.deleteUser(userToDelete.id);
       
       // Kullanıcı listesini güncelle
-      setUsers(users.filter(user => user.id !== userToDelete.id));
+      const updatedUsers = users.filter(user => user.id !== userToDelete.id);
+      setUsers(updatedUsers);
+      setOriginalUsers(originalUsers.filter(user => user.id !== userToDelete.id));
       
       // Dashboard verilerini yenile
       fetchDashboardData();
@@ -246,9 +325,36 @@ const AdminDashboard = () => {
 
         {/* Users Table */}
         <div className="card">
-          <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827', margin: '0 0 30px 0' }}>
-            👥 Kullanıcı Listesi
-          </h2>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            marginBottom: '30px' 
+          }}>
+            <h2 style={{ fontSize: '24px', fontWeight: 'bold', color: '#111827', margin: 0 }}>
+              👥 Kullanıcı Listesi
+            </h2>
+            
+            {/* Reset Button */}
+            <button
+              onClick={handleReset}
+              style={{
+                background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
+                color: '#374151',
+                border: '2px solid #d1d5db',
+                padding: '10px 20px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '600',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              🔄 Sıralamayi Sıfırla
+            </button>
+          </div>
           
           {users.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '60px 20px', color: '#6b7280' }}>
@@ -263,11 +369,41 @@ const AdminDashboard = () => {
                 <thead>
                   <tr>
                     <th>KULLANICI</th>
-                    <th>ÜRÜN SAYISI</th>
-                    <th>TOPLAM DEĞER</th>
-                    <th>TOPLAM VERGİ</th>
-                    <th>ÖDENEN VERGİ</th>
-                    <th>ÖDENMEMİŞ VERGİ</th>
+                    <th 
+                      style={{ cursor: 'pointer', userSelect: 'none' }}
+                      onClick={() => handleSort('productCount')}
+                    >
+                      ÜRÜN SAYISI
+                      {getSortIcon('productCount')}
+                    </th>
+                    <th 
+                      style={{ cursor: 'pointer', userSelect: 'none' }}
+                      onClick={() => handleSort('totalValue')}
+                    >
+                      TOPLAM DEĞER
+                      {getSortIcon('totalValue')}
+                    </th>
+                    <th 
+                      style={{ cursor: 'pointer', userSelect: 'none' }}
+                      onClick={() => handleSort('totalTax')}
+                    >
+                      TOPLAM VERGİ
+                      {getSortIcon('totalTax')}
+                    </th>
+                    <th 
+                      style={{ cursor: 'pointer', userSelect: 'none' }}
+                      onClick={() => handleSort('paidTax')}
+                    >
+                      ÖDENEN VERGİ
+                      {getSortIcon('paidTax')}
+                    </th>
+                    <th 
+                      style={{ cursor: 'pointer', userSelect: 'none' }}
+                      onClick={() => handleSort('unpaidTax')}
+                    >
+                      ÖDENMEMİŞ VERGİ
+                      {getSortIcon('unpaidTax')}
+                    </th>
                     <th>DURUM</th>
                     <th>İŞLEMLER</th>
                   </tr>

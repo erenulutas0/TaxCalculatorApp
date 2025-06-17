@@ -12,6 +12,7 @@ public class AdminDashboardResponse {
     private long paidTaxProducts;
     private long unpaidTaxProducts;
 
+    // Constructors
     public AdminDashboardResponse() {}
 
     public AdminDashboardResponse(long totalUsers, long totalProducts, BigDecimal totalValue,
@@ -28,27 +29,67 @@ public class AdminDashboardResponse {
     }
 
     // Getters and Setters
-    public long getTotalUsers() { return totalUsers; }
-    public void setTotalUsers(long totalUsers) { this.totalUsers = totalUsers; }
+    public long getTotalUsers() {
+        return totalUsers;
+    }
 
-    public long getTotalProducts() { return totalProducts; }
-    public void setTotalProducts(long totalProducts) { this.totalProducts = totalProducts; }
+    public void setTotalUsers(long totalUsers) {
+        this.totalUsers = totalUsers;
+    }
 
-    public BigDecimal getTotalValue() { return totalValue; }
-    public void setTotalValue(BigDecimal totalValue) { this.totalValue = totalValue; }
+    public long getTotalProducts() {
+        return totalProducts;
+    }
 
-    public BigDecimal getTotalTax() { return totalTax; }
-    public void setTotalTax(BigDecimal totalTax) { this.totalTax = totalTax; }
+    public void setTotalProducts(long totalProducts) {
+        this.totalProducts = totalProducts;
+    }
 
-    public BigDecimal getTotalPaidTax() { return totalPaidTax; }
-    public void setTotalPaidTax(BigDecimal totalPaidTax) { this.totalPaidTax = totalPaidTax; }
+    public BigDecimal getTotalValue() {
+        return totalValue;
+    }
 
-    public BigDecimal getTotalUnpaidTax() { return totalUnpaidTax; }
-    public void setTotalUnpaidTax(BigDecimal totalUnpaidTax) { this.totalUnpaidTax = totalUnpaidTax; }
+    public void setTotalValue(BigDecimal totalValue) {
+        this.totalValue = totalValue;
+    }
 
-    public long getPaidTaxProducts() { return paidTaxProducts; }
-    public void setPaidTaxProducts(long paidTaxProducts) { this.paidTaxProducts = paidTaxProducts; }
+    public BigDecimal getTotalTax() {
+        return totalTax;
+    }
 
-    public long getUnpaidTaxProducts() { return unpaidTaxProducts; }
-    public void setUnpaidTaxProducts(long unpaidTaxProducts) { this.unpaidTaxProducts = unpaidTaxProducts; }
+    public void setTotalTax(BigDecimal totalTax) {
+        this.totalTax = totalTax;
+    }
+
+    public BigDecimal getTotalPaidTax() {
+        return totalPaidTax;
+    }
+
+    public void setTotalPaidTax(BigDecimal totalPaidTax) {
+        this.totalPaidTax = totalPaidTax;
+    }
+
+    public BigDecimal getTotalUnpaidTax() {
+        return totalUnpaidTax;
+    }
+
+    public void setTotalUnpaidTax(BigDecimal totalUnpaidTax) {
+        this.totalUnpaidTax = totalUnpaidTax;
+    }
+
+    public long getPaidTaxProducts() {
+        return paidTaxProducts;
+    }
+
+    public void setPaidTaxProducts(long paidTaxProducts) {
+        this.paidTaxProducts = paidTaxProducts;
+    }
+
+    public long getUnpaidTaxProducts() {
+        return unpaidTaxProducts;
+    }
+
+    public void setUnpaidTaxProducts(long unpaidTaxProducts) {
+        this.unpaidTaxProducts = unpaidTaxProducts;
+    }
 }
