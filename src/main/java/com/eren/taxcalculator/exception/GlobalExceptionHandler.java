@@ -11,10 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -23,15 +21,15 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // Basit bir hata yanıtı DTO'su
-    // Ayrı bir dosyada ErrorResponse.java olarak da oluşturulabilir.
+    // Simple error response DTO
+    // Can also be created as a separate ErrorResponse.java file
     public static class ErrorResponse {
         private LocalDateTime timestamp;
         private int status;
         private String error;
         private String message;
         private String path;
-        private Map<String, String> validationErrors; // Validasyon hataları için
+        private Map<String, String> validationErrors; // For validation errors
 
         public ErrorResponse(HttpStatus status, String message, String path) {
             this.timestamp = LocalDateTime.now();
@@ -59,14 +57,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex, HttpServletRequest request) {
         logger.error("BadCredentialsException: {}", ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Geçersiz kullanıcı adı veya şifre.", request.getRequestURI());
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Invalid username or password.", request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex, HttpServletRequest request) {
         logger.error("AccessDeniedException: {}", ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN, "Bu kaynağa erişim yetkiniz bulunmamaktadır.", request.getRequestURI());
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.FORBIDDEN, "You don't have permission to access this resource.", request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 
@@ -97,13 +95,13 @@ public class GlobalExceptionHandler {
 
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST, "Validation failed", request.getRequestURI());
 
-        // Validation hatalarını topla
+        // Collect validation errors
         Map<String, String> validationErrors = ex.getBindingResult().getFieldErrors()
                 .stream()
                 .collect(Collectors.toMap(
                         error -> error.getField(),
                         error -> error.getDefaultMessage(),
-                        (existing, replacement) -> existing // Duplicate key varsa ilkini al
+                        (existing, replacement) -> existing // Keep first value if duplicate key
                 ));
 
         errorResponse.setValidationErrors(validationErrors);
@@ -120,36 +118,36 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleUsernameNotFoundException(UsernameNotFoundException ex, HttpServletRequest request) {
         logger.error("UsernameNotFoundException: {}", ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND, "Kullanıcı bulunamadı", request.getRequestURI());
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND, "User not found", request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(org.springframework.security.authentication.DisabledException.class)
     public ResponseEntity<ErrorResponse> handleDisabledException(org.springframework.security.authentication.DisabledException ex, HttpServletRequest request) {
         logger.error("DisabledException: {}", ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Hesabınız devre dışı bırakılmış", request.getRequestURI());
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Your account has been disabled", request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(org.springframework.security.authentication.LockedException.class)
     public ResponseEntity<ErrorResponse> handleLockedException(org.springframework.security.authentication.LockedException ex, HttpServletRequest request) {
         logger.error("LockedException: {}", ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Hesabınız kilitlenmiş", request.getRequestURI());
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Your account has been locked", request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(org.springframework.security.authentication.AccountExpiredException.class)
     public ResponseEntity<ErrorResponse> handleAccountExpiredException(org.springframework.security.authentication.AccountExpiredException ex, HttpServletRequest request) {
         logger.error("AccountExpiredException: {}", ex.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Hesabınızın süresi dolmuş", request.getRequestURI());
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Your account has expired", request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
-    // Diğer beklenmedik hatalar için genel bir handler
+    // General handler for other unexpected errors
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, HttpServletRequest request) {
         logger.error("Unexpected error occurred: {}", ex.getMessage(), ex);
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Bir hata oluştu. Lütfen daha sonra tekrar deneyin.", request.getRequestURI());
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred. Please try again later.", request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -2,7 +2,7 @@ package com.eren.taxcalculator.model;
 
 public enum ProductType {
     CAR,
-    COMMERCIAL,    // ✅ Bu satırı ekleyin
+    COMMERCIAL,    // Commercial property type
     HOUSE,
     LAND,
     STORE,

@@ -17,7 +17,7 @@ public class Product {
     private boolean taxPaid;
     private String userId;
     private String description;
-    private LocalDateTime taxDueDate; // Bu field'ı ekleyin
+    private LocalDateTime taxDueDate; // Tax due date field
 
     // Constructors
     public Product() {}
@@ -103,7 +103,7 @@ public class Product {
         this.taxDueDate = taxDueDate;
     }
 
-    // Backward compatibility için
+    // Backward compatibility methods
     public String getOwnerId() { return userId; }
     public void setOwnerId(String ownerId) { this.userId = ownerId; }
 

@@ -1,4 +1,3 @@
-// filepath: c:\Users\pc\OneDrive\Masaüstü\TaxCalculator\src\main\java\com\eren\taxcalculator\dto\RegistrationRequest.java
 package com.eren.taxcalculator.dto;
 
 import jakarta.validation.constraints.Email;
@@ -19,7 +18,7 @@ public class RegistrationRequest {
     @Size(min = 6, max = 40)
     private String password;
 
-    private String role; // Bu alan eksikti
+    private String role; // Field for role assignment
 
     // Getters and Setters
     public String getUsername() {

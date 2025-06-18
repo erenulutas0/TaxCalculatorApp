@@ -1,4 +1,3 @@
-// filepath: c:\Users\pc\OneDrive\Masaüstü\TaxCalculator\src\main\java\com\eren\taxcalculator\security\UserPrincipal.java
 package com.eren.taxcalculator.security;
 
 import com.eren.taxcalculator.model.Role;

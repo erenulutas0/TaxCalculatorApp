@@ -1,4 +1,3 @@
-// filepath: c:\Users\pc\OneDrive\Masaüstü\TaxCalculator\src\main\java\com\eren\taxcalculator\dto\ProductCreateRequest.java
 package com.eren.taxcalculator.dto;
 
 import com.eren.taxcalculator.model.ProductType;
@@ -9,14 +8,14 @@ import java.math.BigDecimal;
 
 public class ProductCreateRequest {
 
-    @NotBlank(message = "Ürün adı boş olamaz")
+    @NotBlank(message = "Product name cannot be empty")
     private String name;
 
-    @NotNull(message = "Fiyat belirtilmelidir")
-    @Positive(message = "Fiyat pozitif olmalıdır")
+    @NotNull(message = "Price must be specified")
+    @Positive(message = "Price must be positive")
     private BigDecimal price;
 
-    @NotNull(message = "Ürün tipi belirtilmelidir")
+    @NotNull(message = "Product type must be specified")
     private ProductType type;
 
     private String description;

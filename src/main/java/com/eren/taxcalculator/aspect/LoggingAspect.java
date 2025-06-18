@@ -16,19 +16,19 @@ public class LoggingAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
-    // Service katmanındaki tüm public metotlar için pointcut
+    // Pointcut for all public methods in service layer
     @Pointcut("execution(public * com.eren.taxcalculator.service..*.*(..))")
     public void serviceLayerExecution() {}
 
-    // Controller katmanındaki tüm public metotlar için pointcut
+    // Pointcut for all public methods in controller layer
     @Pointcut("execution(public * com.eren.taxcalculator.controller..*.*(..))")
     public void controllerLayerExecution() {}
 
-    // Hem service hem de controller katmanlarını kapsayan genel bir pointcut
+    // Combined pointcut covering both service and controller layers
     @Pointcut("serviceLayerExecution() || controllerLayerExecution()")
     public void applicationExecution() {}
 
-    // Metot çağrılmadan önce loglama
+    // Log before method execution
     @Before("applicationExecution()")
     public void logBefore(JoinPoint joinPoint) {
         logger.info("==> Enter: {}.{}() with argument[s] = {}",
@@ -37,7 +37,7 @@ public class LoggingAspect {
                 Arrays.toString(joinPoint.getArgs()));
     }
 
-    // Metot başarıyla tamamlandıktan sonra loglama
+    // Log after successful method completion
     @AfterReturning(pointcut = "applicationExecution()", returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
         logger.info("<== Exit: {}.{}() with result = {}",
@@ -46,7 +46,7 @@ public class LoggingAspect {
                 result);
     }
 
-    // Metot exception fırlattığında loglama
+    // Log when method throws exception
     @AfterThrowing(pointcut = "applicationExecution()", throwing = "exception")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable exception) {
         logger.error("!!! Exception in {}.{}() with cause = '{}' and exception = '{}'",
@@ -54,10 +54,10 @@ public class LoggingAspect {
                 joinPoint.getSignature().getName(),
                 exception.getCause() != null ? exception.getCause() : "NULL",
                 exception.getMessage(),
-                exception); // Exception'ın stack trace'ini de loglamak için
+                exception); // Include stack trace in logs
     }
 
-    // Metotların çalışma süresini ölçmek için @Around (isteğe bağlı)
+    // Method execution time measurement using @Around advice
     @Around("applicationExecution()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         StopWatch stopWatch = new StopWatch();
@@ -67,10 +67,10 @@ public class LoggingAspect {
 
         Object result;
         try {
-            result = joinPoint.proceed(); // Hedef metodu çalıştır
+            result = joinPoint.proceed(); // Execute target method
         } catch (Throwable throwable) {
             logger.error("!!! Around: Exception in {}.{}()", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), throwable);
-            throw throwable; // Exception'ı tekrar fırlat
+            throw throwable; // Re-throw exception
         } finally {
             stopWatch.stop();
             logger.debug("<<< Around: Exiting {}.{}(); Execution time: {} ms",

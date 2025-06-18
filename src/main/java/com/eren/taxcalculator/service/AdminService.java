@@ -11,5 +11,5 @@ public interface AdminService {
     List<UserWithProductsResponse> getAllUsersWithProducts();
     List<ProductResponse> getAllProducts();
     List<ProductResponse> getUserProducts(String userId);
-    void deleteUser(String userId); // Bu metodu ekleyin
+    void deleteUser(String userId);
 }

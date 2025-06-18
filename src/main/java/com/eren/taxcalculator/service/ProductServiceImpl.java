@@ -75,12 +75,12 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 
-        // Kullanıcının ürününü kontrol et
+        // Verify user ownership of the product
         if (!product.getUserId().equals(user.getId())) {
             throw new UnauthorizedOperationException("You can only update your own products");
         }
 
-        // Güncelleme işlemi
+        // Update process
         if (request.getName() != null) {
             product.setName(request.getName());
         }
@@ -93,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
         if (request.getDescription() != null) {
             product.setDescription(request.getDescription());
         }
-        if (request.getTaxPaid() != null) { // ✅ Yeni kontrol
+        if (request.getTaxPaid() != null) { // New tax payment status check
             product.setTaxPaid(request.getTaxPaid());
         }
 
@@ -110,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 
-        // Kullanıcının ürününü kontrol et
+        // Verify user ownership of the product
         if (!product.getUserId().equals(user.getId())) {
             throw new UnauthorizedOperationException("You can only delete your own products");
         }
@@ -176,14 +176,14 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 
-        // Kullanıcının ürününü kontrol et
+        // Verify user ownership of the product
         if (!product.getUserId().equals(user.getId())) {
             throw new UnauthorizedOperationException("You can only pay tax for your own products");
         }
 
-        // Vergiyi ödendi olarak işaretle
+        // Mark tax as paid
         product.setTaxPaid(true);
-        if (product.getTaxDueDate() != null) { // Null check ekleyin
+        if (product.getTaxDueDate() != null) { // Add null check
             product.setTaxDueDate(null);
         }
 
@@ -207,7 +207,7 @@ public class ProductServiceImpl implements ProductService {
         response.setTax(taxAmount);
         response.setTaxPaid(product.isTaxPaid());
         response.setUserId(product.getUserId());
-        response.setOwnerId(product.getUserId()); // Aynı değer
+        response.setOwnerId(product.getUserId()); // Same value for backward compatibility
         response.setTaxDueDate(product.getTaxDueDate());
 
         return response;
@@ -220,29 +220,29 @@ public class ProductServiceImpl implements ProductService {
 
         switch (type) {
             case CAR:
-                taxRate = new BigDecimal("0.02"); // %2
+                taxRate = new BigDecimal("0.02"); // 2%
                 break;
             case COMMERCIAL:
-                taxRate = new BigDecimal("0.03"); // %3
+                taxRate = new BigDecimal("0.03"); // 3%
                 break;
             case HOUSE:
             case LAND:
-                taxRate = new BigDecimal("0.001"); // %0.1
+                taxRate = new BigDecimal("0.001"); // 0.1%
                 break;
             case STORE:
-                taxRate = new BigDecimal("0.002"); // %0.2
+                taxRate = new BigDecimal("0.002"); // 0.2%
                 break;
             case ELECTRONICS:
-                taxRate = new BigDecimal("0.18"); // %18
+                taxRate = new BigDecimal("0.18"); // 18%
                 break;
             case JEWELRY:
-                taxRate = new BigDecimal("0.20"); // %20
+                taxRate = new BigDecimal("0.20"); // 20%
                 break;
             case BOAT:
-                taxRate = new BigDecimal("0.05"); // %5
+                taxRate = new BigDecimal("0.05"); // 5%
                 break;
             default:
-                taxRate = new BigDecimal("0.01"); // %1
+                taxRate = new BigDecimal("0.01"); // 1%
                 break;
         }
         return price.multiply(taxRate).setScale(2, RoundingMode.HALF_UP);

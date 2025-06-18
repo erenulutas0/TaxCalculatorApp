@@ -8,14 +8,14 @@ public class ProductUpdateRequest {
 
     private String name;
 
-    @Positive(message = "Fiyat pozitif olmalıdır")
+    @Positive(message = "Price must be positive")
     private BigDecimal price;
 
     private ProductType type;
 
     private String description;
 
-    private Boolean taxPaid; // ✅ Yeni field
+    private Boolean taxPaid; // New field for tax payment status
 
     // Constructors
     public ProductUpdateRequest() {}

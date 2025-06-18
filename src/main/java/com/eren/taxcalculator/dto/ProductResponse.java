@@ -1,4 +1,3 @@
-// filepath: c:\Users\pc\OneDrive\Masaüstü\TaxCalculator\src\main\java\com\eren\taxcalculator\dto\ProductResponse.java
 package com.eren.taxcalculator.dto;
 
 import com.eren.taxcalculator.model.ProductType;
@@ -14,15 +13,15 @@ public class ProductResponse {
     private boolean taxPaid;
     private BigDecimal tax;
     private String userId;
-    private String description;     // Bu field'ı ekleyin
-    private BigDecimal taxAmount;   // Bu field'ı ekleyin
-    private LocalDateTime taxDueDate; // Bu field'ı ekleyin
-    private String ownerId; // Bu field'ı ekleyin (userId ile aynı)
+    private String description;
+    private BigDecimal taxAmount;
+    private LocalDateTime taxDueDate;
+    private String ownerId; // Same as userId for backward compatibility
 
     // Constructors
     public ProductResponse() {}
 
-    // ProductServiceImpl'de kullanılan constructor
+    // Constructor used in ProductServiceImpl
     public ProductResponse(String id, String name, ProductType type, BigDecimal price, String description, BigDecimal taxAmount) {
         this.id = id;
         this.name = name;

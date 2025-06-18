@@ -40,10 +40,10 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
-    // Test endpoint'i ekleyin
+    // Test endpoint to verify controller functionality
     @GetMapping("/test")
     public ResponseEntity<String> test() {
-        return ResponseEntity.ok("AuthController çalışıyor!");
+        return ResponseEntity.ok("AuthController is working!");
     }
 
     @PostMapping("/login")
@@ -64,7 +64,7 @@ public class AuthController {
                     .map(item -> item.getAuthority())
                     .collect(Collectors.toList());
 
-            // User ID'yi almak için repository'den çekin
+            // Fetch user ID from repository
             User user = authService.findByUsername(userDetails.getUsername());
 
             return ResponseEntity.ok(new JwtResponse(jwt,

@@ -15,7 +15,7 @@ public interface UserRepository extends MongoRepository<User, String> {
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
 
-    // Admin olmayan kullanıcıları getir
+    // Fetch users who are not admins
     @Query("{ 'roles.name': { $ne: 'ADMIN' } }")
     List<User> findByRolesNotContaining();
 }

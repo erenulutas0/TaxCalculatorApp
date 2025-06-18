@@ -82,7 +82,7 @@ public class AdminController {
             adminService.deleteUser(userId);
 
             Map<String, String> response = new HashMap<>();
-            response.put("message", "Kullanıcı başarıyla silindi");
+            response.put("message", "User deleted successfully");
             response.put("userId", userId);
 
             logger.info("User deleted successfully via API: {}", userId);
@@ -101,7 +101,7 @@ public class AdminController {
             logger.error("Unexpected error deleting user via API {}: {}", userId, e.getMessage(), e);
 
             Map<String, String> response = new HashMap<>();
-            response.put("error", "Beklenmeyen bir hata oluştu");
+            response.put("error", "An unexpected error occurred");
             response.put("userId", userId);
 
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

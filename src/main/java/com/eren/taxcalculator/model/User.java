@@ -1,4 +1,3 @@
-// filepath: c:\Users\pc\OneDrive\Masaüstü\TaxCalculator\src\main\java\com\eren\taxcalculator\model\User.java
 package com.eren.taxcalculator.model;
 
 import org.springframework.data.annotation.Id;
@@ -29,7 +28,7 @@ public class User {
     // Constructors
     public User() {}
 
-    // GETTER/SETTER metodları - MUTLAKA EKLEYİN:
+    // ESSENTIAL GETTER/SETTER METHODS:
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
