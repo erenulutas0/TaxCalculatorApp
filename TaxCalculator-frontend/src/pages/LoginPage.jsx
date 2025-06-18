@@ -6,15 +6,26 @@ const LoginPage = () => {
     return (
         <div className="auth-container">
             <div className="auth-card">
-                <h2 className="auth-title">Hoş Geldiniz</h2>
-                <p style={{ color: '#666', marginBottom: '30px' }}>
-                    Hesabınıza giriş yapın
+                <h2 className="auth-title">🎉 Hoş Geldiniz</h2>
+                <p className="auth-subtitle">
+                    Hesabınıza giriş yapın ve vergi yönetiminizi kolaylaştırın
                 </p>
                 <LoginForm />
-                <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                    <span style={{ color: '#666' }}>Hesabınız yok mu? </span>
-                    <Link to="/register" className="nav-link">
-                        Kayıt olun
+                <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+                    <span style={{ color: '#666', fontSize: '0.95rem' }}>
+                        Henüz hesabınız yok mu?
+                    </span>
+                    <br />
+                    <Link
+                        to="/register"
+                        className="nav-link"
+                        style={{
+                            fontSize: '1rem',
+                            marginTop: '0.5rem',
+                            display: 'inline-block',
+                        }}
+                    >
+                        ✨ Hemen kayıt olun
                     </Link>
                 </div>
             </div>

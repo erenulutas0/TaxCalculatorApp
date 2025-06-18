@@ -29,7 +29,7 @@ const Navbar = () => {
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <span className="nav-links" style={{ color: '#666' }}>
+                                <span className="nav-user-info">
                                     Hoş geldin, {user.username}
                                 </span>
                             </li>

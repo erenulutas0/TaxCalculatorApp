@@ -30,12 +30,12 @@ const LoginForm = () => {
         <form onSubmit={handleSubmit}>
             {error && (
                 <div className="alert alert-error">
-                    {error}
+                    ❌ {error}
                 </div>
             )}
 
             <div className="form-group">
-                <label className="form-label">Kullanıcı Adı</label>
+                <label className="form-label">👤 Kullanıcı Adı</label>
                 <input
                     type="text"
                     className="form-input"
@@ -47,7 +47,7 @@ const LoginForm = () => {
             </div>
 
             <div className="form-group">
-                <label className="form-label">Şifre</label>
+                <label className="form-label">🔒 Şifre</label>
                 <input
                     type="password"
                     className="form-input"
@@ -65,10 +65,14 @@ const LoginForm = () => {
             >
                 {loading ? (
                     <>
-                        <div className="spinner" style={{ width: '20px', height: '20px', display: 'inline-block', marginRight: '10px' }}></div>
+                        <div className="spinner"></div>
                         Giriş yapılıyor...
                     </>
-                ) : 'Giriş Yap'}
+                ) : (
+                    <>
+                        🚀 Giriş Yap
+                    </>
+                )}
             </button>
         </form>
     );
